@@ -1,13 +1,24 @@
 from pydantic_settings import BaseSettings
+from pydantic import Field
 
-# Configuración de la conexión a MongoDB usando Pydantic
 class Settings(BaseSettings):
-    mongo_uri: str
+    mongo_uri: str = Field(..., alias="MONGO_URI")
 
     class Config:
         env_file = ".env"
+        extra = "allow"
 
 settings = Settings()
 
-# Example usage 
+#print("DEBUG settings.mongo_uri:", settings.mongo_uri)
+# import os
+
+# env_path = os.path.join(os.path.dirname(__file__), ".env")
+# print("¿Existe .env?:", os.path.exists(env_path))
+# if os.path.exists(env_path):
+#     with open(env_path) as f:
+#         print("Contenido de .env:")
+#         print(f.read())
+
+
 # print(settings.mongo_uri)  
