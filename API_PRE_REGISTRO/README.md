@@ -107,13 +107,18 @@ Agrega la siguiente línea (reemplaza con tu URI real de MongoDB):
    ```
 
 ---
-🚀 Instalación y Ejecución
+### 🚀 Instalación y Ejecución
 Instala las dependencias:
 ```bash
 pip install -r requirements.txt
 ```
 Ejecuta el servidor:
 ```bash
-uvicorn app.main:app --reload
+uvicorn app.main:app --reload --port 8010
 ```
 Accede a la documentación interactiva en http://localhost:8000/docs
+
+
+---
+### ¿Porque puerto 8010 para el servidor Uvicorn?
+porque se va a llamar ahi para la peticion de la api de pdf. 
