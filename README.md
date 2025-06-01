@@ -25,7 +25,7 @@ ESTRUCUTURA DE CARPETAS
         ├── routers/            # API routes
         |   ├── auth.py             # Authentication routers
         │   └── ...                 # Other service routers
-        ├── schemas/            # Pydantic models
+        ├── schemas/            # Pydantic models - Models data validation
         |   ├── auth.py              
         │   └── ...
         ├── services/           # Business logic

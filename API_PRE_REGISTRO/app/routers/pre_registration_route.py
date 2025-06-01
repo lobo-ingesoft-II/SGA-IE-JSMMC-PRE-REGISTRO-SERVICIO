@@ -5,6 +5,7 @@ from bson import ObjectId # para manejar ObjectId de MongoDB
 
 
 from app.backend.session import db # Importar la base de datos desde el archivo de sesión
+from app.schemas.form_pre_registro_schema import form_pre_registro # Importar el modelo de datos para validación
 
 router = APIRouter() 
 
@@ -110,3 +111,52 @@ def get_pre_registration(id: str):
         return {"documento": document}
     else:
         raise HTTPException(status_code=404, detail="Documento no encontrado")
+
+# POST /pre_registration
+@router.post(
+    "/pre_registration",
+    # response_model=form_pre_registro,  # Asegúrate de que este modelo esté definido correctamente
+    responses={
+        201: {
+            "description": "Documento creado exitosamente",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "_id": "6838ab661efa82c1dca6d3ed",
+                        "apellidos": "Pérez Gómez",
+                        "nombres": "Juan Carlos"
+                        # ...otros campos...
+                    }
+                }
+            }
+        },
+        400: {
+            "description": "Error al crear el documento",
+            "content": {
+                "application/json": {
+                    "example": {"detail": "Error al crear el documento"}
+                }
+            }
+        }
+    },
+    tags=["Pre_Registration"]
+)
+def create_pre_registration(document:form_pre_registro):
+   
+   # verificar que el documento tenga los campos necesarios 
+   # No se hace porque el modelo PreRegistrationModel ya tiene los campos necesarios definidos y validados
+
+    pre_registration_collection = db["prematriculas"] # Obtener la colección de <prematriculas>
+
+    # Convertir el modelo a un diccionario
+    document_dict = document.model_dump() # Convertir el modelo Pydantic a un diccionario
+
+    # No es necesario crear un ObjectId manualmente, MongoDB lo genera automáticamente al insertar el documento con insert_one
+
+    # Insertar el documento en la colección
+    result = pre_registration_collection.insert_one(document_dict)
+
+    # Convertir el ObjectId a string para que sea serializable
+    document_dict["_id"] = str(result.inserted_id)
+
+    return document_dict  # Retornar el documento creado con su ID asignado por MongoDB
