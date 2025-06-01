@@ -160,3 +160,51 @@ def create_pre_registration(document:form_pre_registro):
     document_dict["_id"] = str(result.inserted_id)
 
     return document_dict  # Retornar el documento creado con su ID asignado por MongoDB
+
+@router.delete(
+    "/pre_registration/{id}",
+    responses={
+        200: {
+            "description": "Documento eliminado exitosamente",
+            "content": {
+                "application/json": {
+                    "example": {"detail": "Documento eliminado exitosamente"}
+                }
+            }
+        },
+        400: {
+            "description": "ID inválido",
+            "content": {
+                "application/json": {
+                    "example": {"detail": "ID inválido, error: ..."}
+                }
+            }
+        },
+        404: {
+            "description": "Documento no encontrado",
+            "content": {
+                "application/json": {
+                    "example": {"detail": "Documento no encontrado"}
+                }
+            }
+        }
+    },
+    tags=["Pre_Registration"]
+)
+def delete_pre_registration(id: str):
+    pre_registration_collection = db["prematriculas"] # Obtener la colección de <prematriculas>
+
+    try:
+        objeto_Id = ObjectId(id)  # Convertir el id a ObjectId
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"ID inválido, error: {str(e)}")
+    
+    # Buscar el documento por su ID
+    document = pre_registration_collection.find_one({"_id": objeto_Id})
+
+    if not document:    
+        raise HTTPException(status_code=404, detail="Documento no encontrado")
+    # Eliminar el documento
+    pre_registration_collection.delete_one({"_id": objeto_Id})  
+    return {"detail": "Documento eliminado exitosamente"}
+
