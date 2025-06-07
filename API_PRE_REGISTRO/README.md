@@ -72,8 +72,10 @@ ESTRUCUTURA DE CARPETAS
 |--------|-----------------------------|---------------------------------------------|
 | GET    | `/pre_registration`         | Listar todos los registros de prematrícula  |
 | GET    | `/pre_registration/{id}`    | Consultar un registro por ID                |
+| GET    | `/pre_registration/getId/{numeroDocumentoEstudiante}`    | Consultar el ID de un resgistro por el numero de documneto                |
 | POST   | `/pre_registration`         | Crear un nuevo registro de prematrícula     |
-| DELETE | `/pre_registration/{id}`    | Borrar  un registro de prematrícula     |
+| DELETE | `/pre_registration/{id}`    | Borrar  un registro de prematrícula         |
+| PUT    | `/pre_registration/{id}`    | Remplazar todo un registro de prematricula  |
 ---
 
 ### Ejemplo de uso (POSTMAN)
@@ -89,12 +91,13 @@ ESTRUCUTURA DE CARPETAS
 **DELETE**
 ![imagen](/API_PRE_REGISTRO/imagenes/POSTMAN-DELETE.png)
 
-
+**PUT**
+![imgaen](/API_PRE_REGISTRO/imagenes/POSTMAN-PUT.png)
 --- 
 ### 📑 Swagger
 
 La documentación Swagger está disponible en:
-http://localhost:8000/docs
+http://localhost:8010/docs
 ---
 
 ### ⚙️ Configuración !!!IMPORTANTE 
@@ -116,9 +119,11 @@ Ejecuta el servidor:
 ```bash
 uvicorn app.main:app --reload --port 8010
 ```
-Accede a la documentación interactiva en http://localhost:8000/docs
+
 
 
 ---
 ### ¿Porque puerto 8010 para el servidor Uvicorn?
 porque se va a llamar ahi para la peticion de la api de pdf. 
+
+

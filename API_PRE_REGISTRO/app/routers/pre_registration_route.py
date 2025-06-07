@@ -112,6 +112,49 @@ def get_pre_registration(id: str):
     else:
         raise HTTPException(status_code=404, detail="Documento no encontrado")
 
+
+# GET /pre_registration/getId/{numeroDocumentoEstudiante}
+@router.get("/pre_registration/getId/{numeroDocumentoEstudiante}" ,response_model=dict,
+    responses={
+        200: {
+            "description": "ID encontrado exitosamente",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "id_": "6838ab661efa82c1dca6d3ed",
+                        "numeroDocumentoEstudiante": "1234567890"
+                    }
+                }
+            }
+        },
+        404: {
+            "description": "Documento o numeroDocumento no encontrado",
+            "content": {
+                "application/json": {
+                    "example": {"detail": "Documento o numeroDocumento no encontrado"}
+                }
+            }
+        }
+    },
+    tags=["Pre_Registration"]
+)
+def getId_pre_registration(numeroDocumentoEstudiante: str):
+    pre_registration_collection = db["prematriculas"] # Obtener la colección de <prematriculas>
+
+    # Buscar documento por su numero Documento 
+    document = pre_registration_collection.find_one({"numeroDocumento": numeroDocumentoEstudiante})
+
+    if not document:    
+        raise HTTPException(status_code=404, detail="Documento o numeroDocumento no encontrado")
+    
+    # Encontrar el id 
+    idStudent =  str(document["_id"])
+
+    # pasar el id en formato JSON
+    return {"id_": idStudent,
+            "numeroDocumentoEstudiante": numeroDocumentoEstudiante }
+
+
 # POST /pre_registration
 @router.post(
     "/pre_registration",
@@ -161,6 +204,7 @@ def create_pre_registration(document:form_pre_registro):
 
     return document_dict  # Retornar el documento creado con su ID asignado por MongoDB
 
+#DELETE "/pre_registration/{id}"
 @router.delete(
     "/pre_registration/{id}",
     responses={
@@ -207,4 +251,69 @@ def delete_pre_registration(id: str):
     # Eliminar el documento
     pre_registration_collection.delete_one({"_id": objeto_Id})  
     return {"detail": "Documento eliminado exitosamente"}
+
+
+# PUT "/pre_registration/{id}"
+# Es un remplazo de un archivo ya existente
+@router.put("/pre_registration/{id}",
+    responses={
+        200: {
+            "description": "Documento actualizado exitosamente",
+            "content": {
+                "application/json": {
+                    "example": {"detail": "Documento actualizado Exitosamente"}
+                }
+            }
+        },
+        400: {
+            "description": "ID inválido",
+            "content": {
+                "application/json": {
+                    "example": {"detail": "ID inválido, error: ..."}
+                }
+            }
+        },
+        404: {
+            "description": "Documento no encontrado",
+            "content": {
+                "application/json": {
+                    "example": {"detail": "Documento no encontrado"}
+                }
+            }
+        }
+    },
+    tags=["Pre_Registration"]
+)
+def change_pre_registration(document:form_pre_registro, id: str):
+   # verificar que el documento tenga los campos necesarios 
+   # No se hace porque el modelo PreRegistrationModel ya tiene los campos necesarios definidos y validados
+
+    pre_registration_collection = db["prematriculas"] # Obtener la colección de <prematriculas>
+
+    # Convertir el modelo a un diccionario
+    document_dict = document.model_dump() # Convertir el modelo Pydantic a un diccionario
+
+    try:
+        objeto_Id = ObjectId(id)  # Convertir el id a ObjectId
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"ID inválido, error: {str(e)}")
+    
+    filter = {"_id": objeto_Id}
+
+    # Hacer un remplazo con un filtro 
+    resultado = pre_registration_collection.replace_one(filter, document_dict)
+
+    if resultado.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Documento no encontrado")
+    
+    # Si es correcto mandar un JSON con el resultado 
+    return {"detail": "Documento actualizado Exitosamente"}
+
+
+
+
+
+
+
+
 

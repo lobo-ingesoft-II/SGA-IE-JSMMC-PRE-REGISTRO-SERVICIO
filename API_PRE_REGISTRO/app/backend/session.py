@@ -9,7 +9,7 @@ client = MongoClient(settings.mongo_uri, server_api=ServerApi('1'))
 # Seleccionar la base de datos
 db = client["prematricula_db"]   # OJO: remplazar por la bd a utilizar     
 
-# print("Colecciones en la base de datos:", db.list_collection_names())
+print("Colecciones en la base de datos:", db.list_collection_names())
 
 # Verifica conexión (opcional)
 try:

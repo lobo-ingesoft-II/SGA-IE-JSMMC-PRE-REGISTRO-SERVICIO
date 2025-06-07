@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import app.routers.pre_registration_route as pre_registration_route
+from app.routers import pre_registration_route
 
 
 # Instancia de FastAPI
