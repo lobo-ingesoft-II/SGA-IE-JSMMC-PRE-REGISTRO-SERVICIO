@@ -1,7 +1,13 @@
 fastapi 
 redis-om
-uvicorn 
+uvicorn[standard]
 # "fastapi[standard]"
 requests 
 pymongo
 pydantic-settings 
+python-dotenv
+motor
+
+
+
+
