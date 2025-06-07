@@ -1,1 +1,21 @@
-prueba.py
+# Entorno virtual
+venv/
+
+# Archivos de Python
+*.pyc
+__pycache__/
+
+# Variables de entorno
+.env
+
+# Logs y bases de datos
+*.log
+*.sqlite3
+
+# VSCode
+.vscode/
+
+# Otros (sistema)
+.DS_Store
+Thumbs.db
+>>>>>>> 1c6b745 (chore: add root .gitignore)
