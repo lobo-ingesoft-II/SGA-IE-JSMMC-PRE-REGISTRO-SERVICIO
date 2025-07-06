@@ -7,7 +7,7 @@ pymongo
 pydantic-settings 
 python-dotenv
 motor
-
+prometheus_client
 
 
 
