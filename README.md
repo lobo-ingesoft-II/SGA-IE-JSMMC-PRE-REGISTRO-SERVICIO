@@ -4,17 +4,7 @@
 **Autor:** Jhoan Sebastian Franco Ruiz
 
 ---
-API para la prematricula
-Recepción y validación de datos del formulario de pre-matrícula
-Almacenamiento de datos del acudiente y estudiante
-Gestión del estado del trámite
-
-Requisitos cubiertos:
-RF1.1: Formulario de pre-matrícula
-RF1.5: Inicio del trámite de matrícula
-
-LLAMAR EN POWERSHELL
-.\crear_fastapi_estructura.ps1
+API o Servicio para la prematricula.
 
 ---
 
@@ -32,37 +22,6 @@ Permite registrar, consultar y validar datos de pre-matrícula, almacenando la i
 - Consulta de registros existentes por ID o listado completo.
 - Documentación interactiva con Swagger (FastAPI).
 
----
-
-## 📁 Estructura del Proyecto
-
-ESTRUCUTURA DE CARPETAS
-
-```
-    └── app/
-        ├── backend/            # Backend functionality and configs
-        |   ├── config.py           # Configuration settings
-        │   └── session.py          # Database session manager
-        ├── models/             # SQLAlchemy models
-        │   ├── auth.py             # Authentication models
-        |   ├── base.py             # Base classes, mixins
-        |   └── ...                 # Other service models
-        ├── routers/            # API routes
-        |   ├── auth.py             # Authentication routers
-        │   └── ...                 # Other service routers
-        ├── schemas/            # Pydantic models - Models data validation
-        |   ├── auth.py              
-        │   └── ...
-        ├── services/           # Business logic
-        |   ├── auth.py             # Create user, generate and verify tokens
-        |   ├── base.py             # Base classes, mixins
-        │   └── ...
-        ├── cli.py              # Command-line utilities
-        ├── const.py            # Constants
-        ├── exc.py              # Exception handlers
-        └── main.py             # Application runner
-```
-
 
 ---
 
@@ -75,25 +34,26 @@ ESTRUCUTURA DE CARPETAS
 | GET    | `/pre_registration/getId/{numeroDocumentoEstudiante}`    | Consultar el ID de un resgistro por el numero de documneto                |
 | POST   | `/pre_registration`         | Crear un nuevo registro de prematrícula     |
 | DELETE | `/pre_registration/{id}`    | Borrar  un registro de prematrícula         |
-| PUT    | `/pre_registration/{id}`    | Remplazar todo un registro de prematricula  |
+| PUT    | `/pre_registration/{id}`    | Modificar todo un registro de prematricula  |
 ---
 
 ### Ejemplo de uso (POSTMAN)
 
 **GET**
-![imagen](/API_PRE_REGISTRO/imagenes/POSTMAN-GET.png)
+![imagen](/imagenes/POSTMAN-GET.png)
 
 **POST**
 
-![imagen](/API_PRE_REGISTRO/imagenes/POSTMAN-POST1.png)
-![imagen](/API_PRE_REGISTRO/imagenes/POSTMAN-POST2.png)
+![imagen](/imagenes/POSTMAN-POST1.png)
+![imagen](/imagenes/POSTMAN-POST2.png)
 
 **DELETE**
-![imagen](/API_PRE_REGISTRO/imagenes/POSTMAN-DELETE.png)
+![imagen](/imagenes/POSTMAN-DELETE.png)
 
 **PUT**
-![imagen](/API_PRE_REGISTRO/imagenes/POSTMAN-PUT.png)
+![imagen](/imagenes/POSTMAN-PUT.png)
 --- 
+
 ### 📑 Swagger
 
 La documentación Swagger está disponible en:
@@ -118,6 +78,19 @@ pip install -r requirements.txt
 Ejecuta el servidor:
 ```bash
 uvicorn app.main:app --reload --port 8010
+```
+
+---
+###  🚀 Correr pruebas unitarias
+
+De forma global 
+```bash
+pytest app/test/unitTest_queryMongoDB.py
+```
+
+De forma mas especifica prueba <test_put_prematricula_invalid_id>
+```bash
+pytest app/test/unitTest_queryMongoDB.py::test_put_prematricula_invalid_id
 ```
 
 ---
