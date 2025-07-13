@@ -8,6 +8,8 @@ pydantic-settings
 python-dotenv
 motor
 prometheus_client
+pytest
+pytest-mock
 
 
 
