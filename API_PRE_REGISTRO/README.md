@@ -120,8 +120,6 @@ Ejecuta el servidor:
 uvicorn app.main:app --reload --port 8010
 ```
 
-
-
 ---
 ### ¿Porque puerto 8010 para el servidor Uvicorn?
 porque se va a llamar ahi para la peticion de la api de pdf. 
