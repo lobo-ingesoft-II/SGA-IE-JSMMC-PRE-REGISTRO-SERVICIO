@@ -19,7 +19,7 @@ def getPrematriculas():
 
     return documents
 
-def getPrematricula_byId(id:int):
+def getPrematricula_byId(id:str):
     pre_registration_collection = db["prematriculas"] # Obtener la colección de <prematriculas>
 
     try:
@@ -42,7 +42,7 @@ def getId_preRegistration_byStudentNumber(studentNumber:str):
     pre_registration_collection = db["prematriculas"] # Obtener la colección de <prematriculas>
 
     # Buscar documento por su numero Documento 
-    document = pre_registration_collection.find_one({"numeroDocumento": numeroDocumentoEstudiante})
+    document = pre_registration_collection.find_one({"numeroDocumento": studentNumber})
 
     if not document:    
         raise HTTPException(status_code=404, detail="Documento o numeroDocumento no encontrado")

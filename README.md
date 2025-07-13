@@ -92,7 +92,7 @@ ESTRUCUTURA DE CARPETAS
 ![imagen](/API_PRE_REGISTRO/imagenes/POSTMAN-DELETE.png)
 
 **PUT**
-![imgaen](/API_PRE_REGISTRO/imagenes/POSTMAN-PUT.png)
+![imagen](/API_PRE_REGISTRO/imagenes/POSTMAN-PUT.png)
 --- 
 ### 📑 Swagger
 
