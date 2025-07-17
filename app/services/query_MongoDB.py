@@ -69,7 +69,7 @@ def deletePreRegistration_byId(id:str):
     # Eliminar el documento
     pre_registration_collection.delete_one({"_id": objeto_Id}) 
 
-    return True
+    return {"message": "Documento eliminado correctamente"}
 
 
 def put_preRegistration(document:form_pre_registro, id:str):
@@ -94,23 +94,61 @@ def put_preRegistration(document:form_pre_registro, id:str):
     if resultado.matched_count == 0:
         raise HTTPException(status_code=404, detail="Documento no encontrado")
     
-    return(True)
+    return {
+    "matched_count": resultado.matched_count,
+    "modified_count": resultado.modified_count}
 
-def createPreRegistration(document:form_pre_registro):
-       
-   # verificar que el documento tenga los campos necesarios 
-   # No se hace porque el modelo PreRegistrationModel ya tiene los campos necesarios definidos y validados
+
+def checkAlreadyExist_preRegistration(document:form_pre_registro):
 
     pre_registration_collection = db["prematriculas"] # Obtener la colección de <prematriculas>
 
-    # Convertir el modelo a un diccionario
-    document_dict = document.model_dump() # Convertir el modelo Pydantic a un diccionario
+    # Obtener id Estudiante 
+    document_dict = document.model_dump()
+    numberDocument_student = document_dict["numeroDocumento"]
 
-    # No es necesario crear un ObjectId manualmente, MongoDB lo genera automáticamente al insertar el documento con insert_one
+    # Buscar si ya hay un registro 
+    documentSearch = pre_registration_collection.find_one({"numeroDocumento": numberDocument_student})
 
-    # Insertar el documento en la colección
-    result = pre_registration_collection.insert_one(document_dict)
+    if not documentSearch:    
+        return (False)
+    else:
+        return (True)
 
-    # Convertir el ObjectId a string para que sea serializable
-    document_dict["_id"] = str(result.inserted_id)
-    return document_dict
+
+
+def createPreRegistration(document:form_pre_registro):
+       
+   # verificar que el documento tenga los campos necesarios -No se hace porque el modelo PreRegistrationModel ya tiene los campos necesarios definidos y validados
+
+    pre_registration_collection = db["prematriculas"] # Obtener la colección de <prematriculas>
+
+    try:
+        document_dict = document.model_dump() # Convertir el modelo Pydantic a un diccionario
+        numberDocument_student = document_dict["numeroDocumento"]
+
+        check = checkAlreadyExist_preRegistration(document)
+        if check == False:
+
+            # No es necesario crear un ObjectId manualmente, MongoDB lo genera automáticamente al insertar el documento con insert_one
+            # Insertar el documento en la colección
+            result = pre_registration_collection.insert_one(document_dict)
+
+            # Convertir el ObjectId a string para que sea serializable
+            document_dict["_id"] = str(result.inserted_id)
+            return document_dict
+        else:
+            # Si existe buscar su id 
+            document_in_bd_id = getId_preRegistration_byStudentNumber(numberDocument_student)
+            
+            # Hacer cambio 
+            result = put_preRegistration(document, document_in_bd_id)
+
+            # Llamar al documento con id 
+            document = getPrematricula_byId(document_in_bd_id)
+            
+            return document
+
+    except:
+        raise HTTPException(status_code=404, detail="Documento no encontrado")
+    # Verificar si ya existe un documento con el numero de documento del estudiante 
