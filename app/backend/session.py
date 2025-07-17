@@ -4,8 +4,9 @@ from pymongo import MongoClient
 from pymongo.server_api import ServerApi
 
 # Importa la constante; si prefieres, puedes seguir usando settings.mongo_uri
-from app.backend.config import MONGO_URI
+from app.backend.config import settings
 
+MONGO_URI = settings.mongo_uri
 # Crear cliente MongoDB
 client = MongoClient(MONGO_URI, server_api=ServerApi("1"))
 
