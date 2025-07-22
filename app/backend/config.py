@@ -9,6 +9,7 @@ from pydantic import Field
 class Settings(BaseSettings):
     # Pydantic leerá MONGO_URI de las env vars
     mongo_uri: str = Field(..., env="MONGO_URI")
+    # base_datos_docker: str = Field(..., env="BASE_DATOS_DOCKER")
 
     class Config:
         env_file = ".env"
@@ -17,7 +18,7 @@ class Settings(BaseSettings):
 
 # Instancia global para quien importe `settings`
 settings = Settings()
-
+# print("Base de datos docker", settings.base_datos_docker)
 
 
 
